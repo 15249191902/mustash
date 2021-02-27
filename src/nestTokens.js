@@ -7,23 +7,18 @@ export default function nestTokens (tokens) {
   // tokens是二维数组
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i]
-    console.log(token)
     switch (token[0]) {
       case "#":
         // 入栈
-        stack.push([token[0], token[1], []])
-        p++
-        trans = stack[p][2]
+        token[2] = []
+        stack.push(token)
+        trans = stack[stack.length - 1][2]
       break;
       case "/":
         // 出栈
-        nestedTokens.push(stack.pop())
-        p--
-        if (p > 0) {
-          trans = stack[p][2]
-        } else {
-          trans = nestedTokens
-        }
+        let pop = stack.pop()
+        trans = stack.length > 0 ?  stack[stack.length - 1][2] : nestedTokens
+        trans.push(pop)
       break;
       default:
         trans.push(token)
